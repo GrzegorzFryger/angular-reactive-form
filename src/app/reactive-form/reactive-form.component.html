@@ -1,0 +1,104 @@
+<div class="form-container" fxLayout="row wrap" fxLayoutAlign="space-around center"   >
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Registration</mat-card-title>
+      <mat-card-subtitle>Write your data to create new account </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div class="example-container">
+        <form class="example-container" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="standard">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="name" formControlName="name"  trim>
+            <mat-error *ngIf="hasError('name', 'required')">Name is required</mat-error>
+            </mat-form-field>
+
+          <mat-form-field appearance="standard">
+            <mat-label>Surname</mat-label>
+            <input matInput placeholder="surname" formControlName="surname" trim>
+            <mat-error *ngIf="hasError('surname', 'required')">Surname is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard"  >
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="email" formControlName="email" trim>
+            <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
+            <mat-error *ngIf="hasError('email', 'email')">Email is valid</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard">
+            <mat-label>Phone</mat-label>
+            <input matInput placeholder="phone" formControlName="phone" trim>
+            <mat-error *ngIf="hasError('phone', 'pattern')"> Wrong phone number </mat-error>
+          </mat-form-field>
+
+          <div class="example-container" formGroupName="passwords">
+          <mat-form-field appearance="standard">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="password" formControlName="password" trim>
+            <mat-error *ngIf="hasChildError('passwords','password', 'required')">Password is required </mat-error>
+            <mat-error *ngIf="hasChildError('passwords','password', 'minlength')">Min length is 8 characters </mat-error>
+            <mat-error *ngIf="hasChildError('passwords','password', 'strong')">Password must constrain special character and uppercasse </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="standard" >
+            <mat-label>Confirm Password</mat-label>
+            <input type="password" matInput placeholder="repeat password"
+                   formControlName="passwordVer" [errorStateMatcher]="errorMatcher" trim>
+            <mat-error *ngIf="hasError('passwords', 'passwordsNotMatch')"> Password don't match </mat-error>
+          </mat-form-field>
+          </div>
+
+          <label>Animal: </label>
+          <mat-radio-group formControlName="pets">
+            <mat-radio-button value="dog">dog</mat-radio-button>
+            <mat-radio-button value="cat">cat</mat-radio-button>
+            <mat-radio-button value="other">other</mat-radio-button>
+            <mat-error *ngIf="hasError('pets', 'required') && isSubmitted ">Select animal</mat-error>
+          </mat-radio-group>
+
+          <h4>Address :</h4>
+          <div class="example-container" formGroupName="address">
+            <mat-form-field appearance="standard">
+              <mat-label>City</mat-label>
+              <input matInput placeholder="city" formControlName="city" trim>
+              <mat-error *ngIf="hasChildError('address','city','required')">City is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Street</mat-label>
+              <input matInput placeholder="street" formControlName="street" trim>
+              <mat-error *ngIf="hasChildError('address','street','required')">Street is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Number of building</mat-label>
+              <input matInput placeholder="building" formControlName="building" trim>
+              <mat-error *ngIf="hasChildError('address','building','required')">Building is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Number of flat</mat-label>
+              <input matInput placeholder="flat" trim>
+            </mat-form-field>
+          </div>
+          <h4>Consents :</h4>
+          <div class="consents" formGroupName="consents">
+            <mat-checkbox formControlName="newsletter">
+            Allow receive e-mail newsletter
+              <mat-error *ngIf="hasChildError('consents','newsletter','required') && isSubmitted">Newsletter is required</mat-error>
+            </mat-checkbox>
+            <div
+              *ngIf="!hasError('phone','pattern') && f['phone']?.touched && !isEmptyPhone ">
+              <mat-checkbox formControlName="sms">
+                Allow receive sms newsletter
+              </mat-checkbox>
+            </div>
+          </div>
+          <button type="submit" mat-raised-button [disabled]="!form.valid" color="primary">Submit</button>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
